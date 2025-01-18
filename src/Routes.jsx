@@ -4,6 +4,7 @@ import { SigninContainer } from '@/components/organism/Auth/SigninContainer';
 import { SignupContainer } from '@/components/organism/Auth/SignupContainer';
 import { ProtectedRoute } from './components/molecules/ProtectedRoutes/ProtectedRoute';
 import Home from './components/organism/home';
+import { WorkspaceLayout } from './pages/workspace/Layout';
 
 
 export const AppRoutes = () =>{
@@ -13,7 +14,7 @@ export const AppRoutes = () =>{
         <Route path="/auth/signin" element={<Auth><SigninContainer /></Auth>} />
         <Route path="/auth/signup" element={<Auth><SignupContainer /></Auth>} />
         <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>} />
-        {/* <Toaster /> */}
+        <Route path="/workspace" element={<ProtectedRoute><WorkspaceLayout>Workspace</WorkspaceLayout></ProtectedRoute>} />
       </Routes>
     )
 

@@ -1,8 +1,13 @@
-import React from 'react'
-import {UserButton} from '@/components/atoms/userButtons/userButton'
+
+import { UserButton } from '@/components/atoms/userButtons/userButton'
+import { useFetchWorkspace } from '@/hooks/apis/workspace/useFatchWorkspace'
 
 export default function Home() {
+  const { isFetching,isSuccess,error,workspaces } = useFetchWorkspace();
   return (
-    <UserButton/>
+    <>
+      <h1>Home</h1>
+      <UserButton />
+    </>
   )
 }

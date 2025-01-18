@@ -2,10 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 
 import { signInRequest } from '@/apis/auth';
 import { useAuth } from '@/hooks/context/useAuth.js';
-// import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 export const useSignin = () => {
-    // const { toast } = useToast();
+    const { toast } = useToast();
     const { setAuth } = useAuth();
     const { isPending, isSuccess, error, mutateAsync: signinMutation } = useMutation({
         mutationFn: signInRequest,
@@ -23,20 +23,20 @@ export const useSignin = () => {
                 loading: false
             });
 
-            // toast({
-            //     title: 'Successfully signed in',
-            //     message: 'You will be redirected to the home page in a few seconds',
-            //     type: 'success'
-            // });
+            toast({
+                title: 'Successfully signed in',
+                message: 'You will be redirected to the home page in a few seconds',
+                type: 'success'
+            });
         },
         onError: (error) => {
             console.error('Failed to sign in', error);
-            // toast({
-            //     title: 'Failed to sign in',
-            //     message: error.message,
-            //     type: 'error',
-            //     variant: 'destructive'
-            // });
+            toast({
+                title: 'Failed to sign in',
+                message: error.message,
+                type: 'error',
+                variant: 'destructive'
+            });
         }
     });
 
