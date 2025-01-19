@@ -35,7 +35,7 @@ export const fetchWorkspacesRequest = async ({ token }) => {
 
 export const fetchWorkspaceDetailsRequest = async ({ workspaceId, token }) => {
     try {
-        const response = await axios.post(`/workspace/${workspaceId}`, {
+        const response = await axios.get(`/workspace/${workspaceId}`, {
             headers: {
                 'x-access-token': token
             }
