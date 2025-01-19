@@ -30,8 +30,8 @@ export default function CreateWorkspaceModal() {
 
       try {
         const data = await createWorkspaceMutation({ name: workspaceName });
-        console.log("hello",data?.name)
-        navigate(`/workspace/${data?.name}`)
+        console.log("hello",data?._id)
+        navigate(`/workspace/${data?._id}`)
       } catch (error) {
         console.log(error);
       } finally{
