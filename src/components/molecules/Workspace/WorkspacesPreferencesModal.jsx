@@ -28,7 +28,6 @@ export const WorkspacesPreferencesModal = ()=>{
                     <p className='text-sm'>
                         {initalValue}
                     </p>
-
                     </div>
 
                     </div>
