@@ -4,9 +4,12 @@ import { DropdownMenu } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/hooks/context/useAuth"
 import { useWorkspacePreferencesModal } from "@/hooks/context/useWorkspacePreferencesModal";
 import { ChevronDownIcon, ListFilterIcon, SquarePenIcon } from 'lucide-react';
+import { useEffect } from "react";
 
 export const WorkspacePanelHeader = ({workspace}) => {
     console.log(workspace)
+
+    const {setWorkspace}=useWorkspacePreferencesModal()
     const workspacemembers = workspace?.members;
 
     const {auth}= useAuth();
@@ -15,7 +18,9 @@ export const WorkspacePanelHeader = ({workspace}) => {
 
     const {setOpenPreferences,setInitialvalue}= useWorkspacePreferencesModal();
 
-
+    useEffect(()=>{
+        setWorkspace(workspace)
+    },[])
 
     return (
         <div className=" flex items-center justify-between px-4 h-[50px] gap-0.5">

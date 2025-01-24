@@ -3,7 +3,7 @@ import { Auth } from './pages/Auth/Auth';
 import { SigninContainer } from '@/components/organism/Auth/SigninContainer';
 import { SignupContainer } from '@/components/organism/Auth/SignupContainer';
 import { ProtectedRoute } from './components/molecules/ProtectedRoutes/ProtectedRoute';
-import Home from './components/organism/home';
+import {Home} from './pages/Home/Home';
 import { WorkspaceLayout } from './pages/workspace/Layout';
 
 
