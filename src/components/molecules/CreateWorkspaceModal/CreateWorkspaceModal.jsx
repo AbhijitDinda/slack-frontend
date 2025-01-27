@@ -10,10 +10,12 @@ import {
   } from "@/components/ui/dialog"
 import { useCreateWorkspace } from "@/hooks/apis/workspace/useCreateWorkspace";
 import { useCreateWorkspaceModal } from "@/hooks/context/useCreateWorkspaceModal"
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
   
 export default function CreateWorkspaceModal() {
+  const queryClient = useQueryClient()
   const {openCreateWorkspaceModal,setOpenCreateWorkspaceModal} = useCreateWorkspaceModal()
   
   const { isPending,isSuccess,createWorkspaceMutation}= useCreateWorkspace()
@@ -30,8 +32,11 @@ export default function CreateWorkspaceModal() {
 
       try {
         const data = await createWorkspaceMutation({ name: workspaceName });
-        console.log("hello",data?._id)
-        navigate(`/workspace/${data?._id}`)
+        console.log("hello",data?._id);
+        navigate(`/workspace/${data?._id}`);
+        queryClient.invalidateQueries('fetchWorkspaces')
+
+
       } catch (error) {
         console.log(error);
       } finally{

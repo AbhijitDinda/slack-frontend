@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useDeleteWorkspace } from '@/hooks/apis/workspace/useDeleteWorkspace';
+import { useUpdateWorkspace } from '@/hooks/apis/workspace/useUpdateWorkspace';
 import { useWorkspacePreferencesModal } from '@/hooks/context/useWorkspacePreferencesModal';
+import { toast } from '@/hooks/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 import { TrashIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -19,7 +21,9 @@ export const WorkspacesPreferencesModal = () => {
 
     const { deleteWorkspaceMutation } = useDeleteWorkspace(workspaceId);
 
-    const [renameValue,setRenameValue] = useState(workspace?.name)
+    const [renameValue, setRenameValue] = useState(workspace?.name)
+
+    const { isPending, isSuccess, error, updateWorkspaceMutation } = useUpdateWorkspace(workspaceId);
 
     function handcleClose() {
         setOpenPreferences(false)
@@ -39,8 +43,27 @@ export const WorkspacesPreferencesModal = () => {
     }
 
     useEffect(() => {
-        setWorkspaceId(workspace?._id)
+        setWorkspaceId(workspace?._id);
+        setRenameValue(workspace?.name)
     }, [workspace])
+
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+        try {
+            await updateWorkspaceMutation(renameValue)
+            queryClient.invalidateQueries('fetchWorkspaces');
+            setOpenPreferences(false);
+            toast({
+                title:'workspace updated successfully'
+            })
+
+        } catch (error) {
+            console.log(error)
+            toast({
+                title:'Error in updating workspace'
+            })
+        }
+    }
 
 
     return (
@@ -53,40 +76,55 @@ export const WorkspacesPreferencesModal = () => {
                 </DialogHeader>
 
                 <div className='px-4 pb-4 flex flex-col gap-y-2'>
-                <Dialog>
-                    <DialogTrigger>
+                    <Dialog>
+                        <DialogTrigger>
 
-                    <div className='px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-green-50'>
-                        <div className='flex items-center justify-between'>
-                            <p className='font-semibold text-sm'> Workspace Name
+                            <div className='px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-green-50'>
+                                <div className='flex items-center justify-between'>
+                                    <p className='font-semibold text-sm'> Workspace Name
 
-                            </p>
-                            <p className='text-sm font-semibold hover:underline'>Edit
+                                    </p>
+                                    <p className='text-sm font-semibold hover:underline'>Edit
 
-                            </p>
-                        </div>
-                        <p className='text-sm'>
-                            {initalValue}
-                        </p>
-                    </div>
-                    </DialogTrigger>
+                                    </p>
+                                </div>
+                                <p className='text-sm'>
+                                    {initalValue}
+                                </p>
+                            </div>
+                        </DialogTrigger>
 
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>
-                                Rename Workspace
-                            </DialogTitle>
-                        </DialogHeader>
-                        <form className='space-y-4'>
-                            <Input value={renameValue}
-                            onChange={(e)=>setRenameValue(e.target.value)} required />
-                        </form>
-                    </DialogContent>
-                </Dialog>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    Rename Workspace
+                                </DialogTitle>
+                            </DialogHeader>
+                            <form className='space-y-4' onSubmit={handleFormSubmit}>
+                                <Input value={renameValue}
+                                    onChange={(e) => setRenameValue(e.target.value)}
+                                    required
+                                    autoFocus
+                                    minLength={3}
+                                    maxLength={50}
+                                    disabled={isPending}
+                                    placeholder="Workspace Name"
+                                />
 
+                                <DialogFooter>
+                                    <DialogClose>
+                                        <Button varriant="outline"
+                                            disabled={isPending}>
+                                            Cancel
+                                        </Button>
+                                    </DialogClose>
+                                    <Button type="Submit" disabled={isPending}>Save
 
-
-
+                                    </Button>
+                                </DialogFooter>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
                 </div>
 
 
