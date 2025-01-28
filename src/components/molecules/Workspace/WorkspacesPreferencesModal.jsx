@@ -6,6 +6,7 @@ import { useDeleteWorkspace } from '@/hooks/apis/workspace/useDeleteWorkspace';
 import { useUpdateWorkspace } from '@/hooks/apis/workspace/useUpdateWorkspace';
 import { useWorkspacePreferencesModal } from '@/hooks/context/useWorkspacePreferencesModal';
 import { toast } from '@/hooks/use-toast';
+import { useConfirm } from '@/hooks/useConfirm';
 import { useQueryClient } from '@tanstack/react-query';
 import { TrashIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -21,9 +22,13 @@ export const WorkspacesPreferencesModal = () => {
 
     const { deleteWorkspaceMutation } = useDeleteWorkspace(workspaceId);
 
+
     const [renameValue, setRenameValue] = useState(workspace?.name)
 
     const { isPending, isSuccess, error, updateWorkspaceMutation } = useUpdateWorkspace(workspaceId);
+    const {ConfirmDialog, confirmation} =useConfirm({title:"Do you want to Delete workspace",message:'This Action can not be Undone'})
+
+
 
     function handcleClose() {
         setOpenPreferences(false)
@@ -32,6 +37,10 @@ export const WorkspacesPreferencesModal = () => {
 
     async function handleDelete() {
         try {
+            const ok = await confirmation();
+            if(!ok){
+                return;
+            }
             await deleteWorkspaceMutation();
             navigate('/home');
             queryClient.invalidateQueries('fetchWorkspaces');
@@ -67,6 +76,9 @@ export const WorkspacesPreferencesModal = () => {
 
 
     return (
+        <>
+
+        <ConfirmDialog/>
         <Dialog open={openPreferences} onOpenChange={handcleClose}>
             <DialogContent>
                 <DialogHeader className="p-0 bg-grey-50 overflow-hidden">
@@ -135,6 +147,7 @@ export const WorkspacesPreferencesModal = () => {
 
             </DialogContent>
         </Dialog>
+        </>
     )
 
 }
