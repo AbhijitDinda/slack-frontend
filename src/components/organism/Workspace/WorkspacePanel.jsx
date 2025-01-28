@@ -2,6 +2,7 @@ import { useGetWorkspaceById } from '@/hooks/apis/workspace/useGetWorkspaceById'
 import { useParams } from 'react-router-dom';
 import { AlertTriangleIcon, HashIcon, Loader, MessageSquareTextIcon, SendHorizonalIcon } from 'lucide-react';
 import {WorkspacePanelHeader} from '@/components/molecules/Workspace/WorkspacePanelHeader';
+import { SideBarItem } from '@/components/atoms/SideBarItem/SideBarItem';
 
 
 export const WorkspacePanel = () => {
@@ -34,6 +35,10 @@ export const WorkspacePanel = () => {
     return(
         <div className="flex flex-col h-full bg-slack-medium">
             <WorkspacePanelHeader workspace={workspace}/>
+            <div className='flex flex-col px-2 mt-3'>
+            <SideBarItem label="Threds" icon={MessageSquareTextIcon}
+            id="Threds" variant="active"/>
+            </div>
         </div>
     )
 }

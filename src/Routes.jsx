@@ -15,6 +15,10 @@ export const AppRoutes = () =>{
         <Route path="/auth/signup" element={<Auth><SignupContainer /></Auth>} />
         <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>} />
         <Route path="/workspace/:workspaceId" element={<ProtectedRoute><WorkspaceLayout>Workspace</WorkspaceLayout></ProtectedRoute>} />
+
+
+        <Route path="/workspace/:workspaceId/channels/:channelId" element={<ProtectedRoute>channels</ProtectedRoute>} />
+
       </Routes>
     )
 
