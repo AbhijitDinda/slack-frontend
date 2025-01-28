@@ -5,7 +5,6 @@ import { WorkspacesPreferencesModal } from "@/components/molecules/Workspace/Wor
 export const Modal = ()=> {
     return(
         <>
-
         <CreateWorkspaceModal/>
         <WorkspacesPreferencesModal/>
         <CreateChannelModal/>
